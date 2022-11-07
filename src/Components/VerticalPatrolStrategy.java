@@ -1,11 +1,21 @@
 package Components;
 
+import Util.Position2D;
+
 public class VerticalPatrolStrategy extends AbstractPatrolStrategy
 {
-    // TODO:
+
+    public VerticalPatrolStrategy(Position2D<Float> initialPos, int movementSpeed){ super(initialPos,movementSpeed); }
+
+
     @Override
     public void update(float deltaT)
     {
-        // TODO:
+        float mov = deltaT * super.speed;
+        if(super.getIsGoAhead()) {
+            super.currentPosition.y += mov;
+        } else {
+            super.currentPosition.y -= mov;
+        }
     }
 }

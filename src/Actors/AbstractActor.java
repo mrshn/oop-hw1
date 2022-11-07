@@ -1,22 +1,40 @@
 package Actors;
 
+import Components.AbstractPatrolStrategy;
 import Components.IRealTimeComponent;
 
+import Components.SpriteComponent;
 import Util.AABB;
 import Util.Position2D;
 
 import java.awt.*;
 
-// Meta Actor Class
-// Everything in the game is an actor
+
 public abstract class AbstractActor extends AABB implements IRealTimeComponent
 {
-    // TODO:
+    /**
+     * Every Actor has a drawer SpriteComponent
+     */
+    protected SpriteComponent sprite;
+
+    /**
+     * Holds if the actor is dead or not
+     */
+    private boolean isActorDead;
+
+    protected AbstractPatrolStrategy movement;
 
 
     public AbstractActor(Position2D<Float> pos, float szX, float szY)
     {
         super(pos, szX, szY);
+        isActorDead = false;
+        sprite = null;
+    }
+
+    public boolean isDead()
+    {
+        return isActorDead;
     }
 
     public void update(float deltaT)
@@ -30,5 +48,12 @@ public abstract class AbstractActor extends AABB implements IRealTimeComponent
         // TODO:
     }
 
-    public abstract boolean isDead();
+    public void smash(AbstractActor rhs){
+       if(movement != null) {
+           movement.changeDirection();
+       }
+    }
+
+
+
 }

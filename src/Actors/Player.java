@@ -8,16 +8,14 @@ import Util.Position2D;
 
 public class Player extends AbstractActor
 {
-    SpriteComponent sprite;
     // TODO:
     public  Player(Position2D<Float> pos, float szX, float szY)
     {
         super(pos, szX, szY);
         try {
-            this.sprite = new SpriteComponent("./data/img/player.png");
-
+            sprite = new SpriteComponent("./data/img/player.png");
         } catch (Exception e) {
-            System.out.println("anana");
+            throw new RuntimeException(e);
         }
     }
 
@@ -31,8 +29,6 @@ public class Player extends AbstractActor
     public void update(float deltaT, Graphics2D g)
     {
         // TODO: or delete
-
-        this.getPos().x += 1;
         sprite.draw(g, this);
 
     }

@@ -24,11 +24,48 @@ public class GameEngine
     private ArrayList<IRealTimeComponent> miscComponents;
 
 
+    private void subsCollisions()
+    {
+        CollisionComponent collisionInstance =  CollisionComponent.getInstance();
+        collisionInstance.clearAll();
+        collisionInstance.subscribe(player);
+        enemies.forEach( eachEnemy -> collisionInstance.subscribe(eachEnemy) );
+        walls.forEach( eachWall -> collisionInstance.subscribe(eachWall) );
+        powerUps.forEach( eachPowerUp -> collisionInstance.subscribe(eachPowerUp) );
+
+        miscComponents.add(collisionInstance);
+    }
+
     private void setReadValues(GameMapLoader map )
     {
+
         map.getLoadedWallAABBs().forEach( eachWall ->  this.walls.add(  new Wall(eachWall.getPos(),eachWall.getSizeX(),eachWall.getSizeY()) ) );
-        AABB AAplayer = map.getLoadedPlayerAABB();
-        this.player = new Player(AAplayer.getPos(),AAplayer.getSizeX(),AAplayer.getSizeY());
+        map.getLoadedEnemyStationaryAABBs().forEach( eachEnemy ->  this.enemies.add(  new Enemy(eachEnemy.getPos(),eachEnemy.getSizeX(),eachEnemy.getSizeY()) ) );
+
+        map.getLoadedEnemyXAABBs().forEach(
+                eachEnemy ->
+                        {
+                            Enemy enemy = new Enemy(eachEnemy.getPos(), eachEnemy.getSizeX(), eachEnemy.getSizeY());
+                            enemy.setMovement( new HorizontalPatrolStrategy(eachEnemy.getPos(),120) );
+                            this.enemies.add(enemy);
+                        }
+        );
+
+        map.getLoadedEnemyYAABBs().forEach(
+                eachEnemy ->
+                        {
+                            Enemy enemy = new Enemy(eachEnemy.getPos(), eachEnemy.getSizeX(), eachEnemy.getSizeY());
+                            enemy.setMovement( new VerticalPatrolStrategy(eachEnemy.getPos(),120) );
+                            this.enemies.add(enemy);
+                        }
+        );
+        map.getLoadedPowerUpAABBs().forEach( eachPowerUp ->  this.powerUps.add(  new PowerUp(eachPowerUp.getPos(),eachPowerUp.getSizeX(),eachPowerUp.getSizeY()) ) );
+        map.getLoadedWallAABBs().forEach( eachBullet ->  this.bulletsInCirculation.add(  new Bullet(eachBullet.getPos(),eachBullet.getSizeX(),eachBullet.getSizeY()) ) );
+
+        AABB AABBplayer = map.getLoadedPlayerAABB();
+        this.player = new Player(AABBplayer.getPos(),AABBplayer.getSizeX(),AABBplayer.getSizeY());
+
+        subsCollisions();
     }
 
     private void ResetGame()
@@ -37,6 +74,7 @@ public class GameEngine
         walls.clear();
         enemies.clear();
         powerUps.clear();
+        miscComponents.clear(); // TODO: check
 
         GameMapLoader map = new GameMapLoader(screenSize);
         boolean mapOK = map.loadMap(this.currentMap);
