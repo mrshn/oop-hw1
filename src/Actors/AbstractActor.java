@@ -13,6 +13,7 @@ public abstract class AbstractActor extends AABB implements IRealTimeComponent
 {
     // TODO:
 
+
     public AbstractActor(Position2D<Float> pos, float szX, float szY)
     {
         super(pos, szX, szY);
@@ -23,6 +24,7 @@ public abstract class AbstractActor extends AABB implements IRealTimeComponent
         // TODO: or delete
     }
 
+    // Called in the
     public void update(float deltaT, Graphics2D g)
     {
         // TODO:

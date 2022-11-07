@@ -23,6 +23,14 @@ public class GameEngine
     // Add extra components if you like
     private ArrayList<IRealTimeComponent> miscComponents;
 
+
+    private void setReadValues(GameMapLoader map )
+    {
+        map.getLoadedWallAABBs().forEach( eachWall ->  this.walls.add(  new Wall(eachWall.getPos(),eachWall.getSizeX(),eachWall.getSizeY()) ) );
+        AABB AAplayer = map.getLoadedPlayerAABB();
+        this.player = new Player(AAplayer.getPos(),AAplayer.getSizeX(),AAplayer.getSizeY());
+    }
+
     private void ResetGame()
     {
         bulletsInCirculation.clear();
@@ -32,6 +40,8 @@ public class GameEngine
 
         GameMapLoader map = new GameMapLoader(screenSize);
         boolean mapOK = map.loadMap(this.currentMap);
+
+        setReadValues(map);
 
         if(!mapOK)
         {

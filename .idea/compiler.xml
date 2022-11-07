@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_STRING" value="../data/map1.dat" />
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="emre-hw1" options="" />
+    </option>
+  </component>
+</project>

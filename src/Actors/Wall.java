@@ -1,14 +1,26 @@
 package Actors;
 
 import java.awt.*;
+
+import Components.SpriteComponent;
 import Util.Position2D;
 
 public class Wall extends AbstractActor
 {
-    private Wall(Position2D<Float> pos, float szX, float szY)
+    SpriteComponent sprite;
+
+    public  Wall(Position2D<Float> pos, float szX, float szY)
     {
         super(pos, szX, szY);
+        try {
+            this.sprite = new SpriteComponent("./data/img/wall.png");
+
+
+        } catch (Exception e) {
+            System.out.println("anana");
+        }
     }
+
     public void update(float deltaT)
     {
         // TODO: or delete
@@ -23,8 +35,6 @@ public class Wall extends AbstractActor
     @Override
     public boolean isDead()
     {
-        // TODO:
         return false;
-
     }
 }
