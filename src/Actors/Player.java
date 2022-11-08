@@ -19,6 +19,11 @@ public class Player extends AbstractActor
         }
     }
 
+    public void movePlayer(float moveX, float moveY)
+    {
+        super.getPos().x += moveX ;
+        super.getPos().y += moveY ;
+    }
 
     public void update(float deltaT)
     {

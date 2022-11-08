@@ -33,7 +33,7 @@ public class GameEngine
         walls.forEach( eachWall -> collisionInstance.subscribe(eachWall) );
         powerUps.forEach( eachPowerUp -> collisionInstance.subscribe(eachPowerUp) );
 
-        miscComponents.add(collisionInstance);
+        this.miscComponents.add(collisionInstance);
     }
 
     private void setReadValues(GameMapLoader map )
@@ -64,8 +64,14 @@ public class GameEngine
 
         AABB AABBplayer = map.getLoadedPlayerAABB();
         this.player = new Player(AABBplayer.getPos(),AABBplayer.getSizeX(),AABBplayer.getSizeY());
+        PlayerInputComponent playerInputInstance = PlayerInputComponent.getPlayerInputComponentInstance();
+        playerInputInstance.setPlayer(this.player);
 
         subsCollisions();
+        this.miscComponents.add(playerInputInstance);
+        GameWindow.GetInstance().attachKeyListener(playerInputInstance);
+
+
     }
 
     private void ResetGame()
