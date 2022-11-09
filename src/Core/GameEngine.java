@@ -26,7 +26,7 @@ public class GameEngine
 
     private void subsCollisions()
     {
-        CollisionComponent collisionInstance =  CollisionComponent.getInstance();
+        CollisionComponent collisionInstance =  CollisionComponent.GetInstance();
         collisionInstance.clearAll();
         collisionInstance.subscribe(player);
         enemies.forEach( eachEnemy -> collisionInstance.subscribe(eachEnemy) );
@@ -46,7 +46,7 @@ public class GameEngine
                 eachEnemy ->
                         {
                             Enemy enemy = new Enemy(eachEnemy.getPos(), eachEnemy.getSizeX(), eachEnemy.getSizeY());
-                            enemy.setMovement( new HorizontalPatrolStrategy(eachEnemy.getPos(),120) );
+                            enemy.setMovement( new HorizontalPatrolStrategy(eachEnemy.getPos()) );
                             this.enemies.add(enemy);
                         }
         );
@@ -55,22 +55,25 @@ public class GameEngine
                 eachEnemy ->
                         {
                             Enemy enemy = new Enemy(eachEnemy.getPos(), eachEnemy.getSizeX(), eachEnemy.getSizeY());
-                            enemy.setMovement( new VerticalPatrolStrategy(eachEnemy.getPos(),120) );
+                            enemy.setMovement( new VerticalPatrolStrategy(eachEnemy.getPos()) );
                             this.enemies.add(enemy);
                         }
         );
         map.getLoadedPowerUpAABBs().forEach( eachPowerUp ->  this.powerUps.add(  new PowerUp(eachPowerUp.getPos(),eachPowerUp.getSizeX(),eachPowerUp.getSizeY()) ) );
-        map.getLoadedWallAABBs().forEach( eachBullet ->  this.bulletsInCirculation.add(  new Bullet(eachBullet.getPos(),eachBullet.getSizeX(),eachBullet.getSizeY()) ) );
 
         AABB AABBplayer = map.getLoadedPlayerAABB();
         this.player = new Player(AABBplayer.getPos(),AABBplayer.getSizeX(),AABBplayer.getSizeY());
-        PlayerInputComponent playerInputInstance = PlayerInputComponent.getPlayerInputComponentInstance();
+
+        PlayerInputComponent playerInputInstance = PlayerInputComponent.GetInstance();
         playerInputInstance.setPlayer(this.player);
+        GameWindow.GetInstance().attachKeyListener(playerInputInstance);
+        this.miscComponents.add(playerInputInstance);
 
         subsCollisions();
-        this.miscComponents.add(playerInputInstance);
-        GameWindow.GetInstance().attachKeyListener(playerInputInstance);
 
+        BulletEnemyCollisionHandler  bulletEnemyCollisionInstance = BulletEnemyCollisionHandler.GetInstance();
+        bulletEnemyCollisionInstance.initializeBulletEnemyCollision( this.enemies, this.bulletsInCirculation, this.walls);
+        this.miscComponents.add(bulletEnemyCollisionInstance);
 
     }
 

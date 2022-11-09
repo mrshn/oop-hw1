@@ -1,21 +1,19 @@
 package Components;
 
+import Constants.ActorConfigurations;
 import Util.Position2D;
 
 public abstract class AbstractPatrolStrategy implements IRealTimeComponent
 {
     protected  Position2D<Float> currentPosition;
     private boolean goAhead;
-    protected int speed;
+    protected float speed;
 
-    /**
-     * Creates an Abstract Patrol Strategy
-     */
-    public AbstractPatrolStrategy(Position2D<Float> initialPos, int movementSpeed )
+    public AbstractPatrolStrategy(Position2D<Float> initialPos)
     {
         currentPosition = initialPos;
+        speed = ActorConfigurations.ENEMY_SPEED;
         goAhead = false;
-        speed = movementSpeed;
     }
 
     public boolean  getIsGoAhead()

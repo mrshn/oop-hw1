@@ -5,8 +5,10 @@ import Util.Position2D;
 public class HorizontalPatrolStrategy extends AbstractPatrolStrategy
 {
 
-    public HorizontalPatrolStrategy(Position2D<Float> initialPos, int movementSpeed){ super(initialPos,movementSpeed); }
-
+    public HorizontalPatrolStrategy(Position2D<Float> initialPos)
+    {
+        super(initialPos);
+    }
 
     @Override
     public void update(float deltaT)

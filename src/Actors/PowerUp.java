@@ -4,18 +4,18 @@ import java.awt.*;
 
 import Components.SpriteComponent;
 import Constants.CollisionActorType;
+import Constants.PathConstants;
 import Util.Position2D;
 
 
 public class PowerUp extends AbstractActor
 {
-    // TODO:
 
     public PowerUp(Position2D<Float> pos, float szX, float szY)
     {
         super(pos, szX, szY);
         try {
-            sprite = new SpriteComponent("./data/img/scroll.png");
+            sprite = new SpriteComponent(PathConstants.POWERUPPATH);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -26,18 +26,12 @@ public class PowerUp extends AbstractActor
         return CollisionActorType.POWERUP;
     }
 
-
-    @Override
-    public void update(float deltaT, Graphics2D g)
+    public void smash(AbstractActor rightActor)
     {
-        // TODO or delete
-    }
-
-    @Override
-    public boolean isDead()
-    {
-        // TODO:
-        return false;
+        switch (rightActor.getRightActorType()) {
+            case PLAYER:
+                super.setActorDead();
+        }
     }
 
 }

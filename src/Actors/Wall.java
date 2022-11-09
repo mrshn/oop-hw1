@@ -4,6 +4,7 @@ import java.awt.*;
 
 import Components.SpriteComponent;
 import Constants.CollisionActorType;
+import Constants.PathConstants;
 import Util.Position2D;
 
 public class Wall extends AbstractActor
@@ -13,8 +14,7 @@ public class Wall extends AbstractActor
     {
         super(pos, szX, szY);
         try {
-            // TODO: make the paths constant
-            sprite = new SpriteComponent("./data/img/wall.png");
+            sprite = new SpriteComponent(PathConstants.WALLPATH);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -25,16 +25,17 @@ public class Wall extends AbstractActor
         return CollisionActorType.WALL;
     }
 
-    @Override
-    public void update(float deltaT, Graphics2D g)
+    public void smash(AbstractActor rightActor)
     {
-        // TODO: or delete
-        sprite.draw(g, this);
+        switch (rightActor.getRightActorType()) {
+    /*        case BULLET:
+                rightActor.setActorDead();
+                break; */
+            case ENEMY:
+            case PLAYER:
+                super.moveIfCollide(rightActor);
+                break;
+        }
     }
 
-    @Override
-    public boolean isDead()
-    {
-        return false;
-    }
 }

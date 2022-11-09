@@ -4,17 +4,18 @@ import java.awt.*;
 
 import Components.SpriteComponent;
 import Constants.CollisionActorType;
+import Constants.PathConstants;
 import Util.Position2D;
 
 
 public class Player extends AbstractActor
 {
-    // TODO:
+
     public  Player(Position2D<Float> pos, float szX, float szY)
     {
         super(pos, szX, szY);
         try {
-            sprite = new SpriteComponent("./data/img/player.png");
+            sprite = new SpriteComponent(PathConstants.PLAYERPATH);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -31,21 +32,19 @@ public class Player extends AbstractActor
         super.getPos().y += moveY ;
     }
 
-
-    @Override
-    public void update(float deltaT, Graphics2D g)
+    public void smash(AbstractActor rightActor)
     {
-        // TODO: or delete
-        sprite.draw(g, this);
-
+        switch (rightActor.getRightActorType()) {
+            case ENEMY:
+                super.setActorDead();
+                break;
+            case POWERUP:
+                rightActor.setActorDead();
+                break;
+            case WALL:
+                super.moveIfCollide(rightActor);
+                break;
+        }
     }
 
-    @Override
-    public boolean isDead()
-    {
-        // TODO:
-        // if collision happened with the enemy
-        return false;
-
-    }
 }

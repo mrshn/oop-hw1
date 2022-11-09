@@ -2,6 +2,7 @@ package Components;
 
 import Actors.Bullet;
 import Actors.Player;
+import Constants.ActorConfigurations;
 import Constants.MovementType;
 import Util.Position2D;
 
@@ -19,6 +20,8 @@ public class PlayerInputComponent implements IRealTimeComponent, KeyListener
     private boolean firePressed;
     private Player player;
     private MovementType currentMovementType;
+    private MovementType lastPressedDirection;
+
 
     private static final PlayerInputComponent playerInputComponent = new PlayerInputComponent();
 
@@ -33,17 +36,11 @@ public class PlayerInputComponent implements IRealTimeComponent, KeyListener
         firePressed = false;
     }
 
-    /**
-     * @return
-     */
-    public static PlayerInputComponent getPlayerInputComponentInstance()
+    public static PlayerInputComponent GetInstance()
     {
         return playerInputComponent;
     }
 
-    /**
-     * @param
-     */
     public void setPlayer(Player rhs) {
         this.player = rhs;
     }
@@ -52,32 +49,28 @@ public class PlayerInputComponent implements IRealTimeComponent, KeyListener
     public void update(float deltaT)
     {
         float moveX = 0, moveY = 0;
+        float totalMovement = deltaT * ActorConfigurations.PLAYER_SPEED;
+
         switch(currentMovementType) {
             case UP:
-                moveY -= 110 * deltaT;
+                moveY -= totalMovement;
                 break;
             case DOWN:
-                moveY = 110 * deltaT;
+                moveY = totalMovement;
                 break;
             case LEFT:
-                moveX -= 110 * deltaT;
+                moveX -= totalMovement;
                 break;
             case RIGHT:
-                moveX = 110 * deltaT;
+                moveX = totalMovement;
         }
+
         if(firePressed) {
+            firePressed = false;
             Bullet bullet = new Bullet(new Position2D<Float>(player.getPos().x, player.getPos().y), player.getSizeX(), player.getSizeY());
-            //bullet.setDirection(currentMovementType);
-            //BulletCollisionHandler.getInstance().addBullet(bullet);
+            bullet.fireBulletInDirection( currentMovementType ==MovementType.STOP ? lastPressedDirection :currentMovementType  );
+            BulletEnemyCollisionHandler.GetInstance().addBullet(bullet);
         }
-/*
-        float moveX = (rightPressed)
-                ? 110 * deltaT
-                : (leftPressed) ? (-110) * deltaT : 0;
-        float moveY = (upPressed)
-                ? 110 * deltaT
-                : (downPressed) ? (-110) * deltaT : 0;
-*/
 
         player.movePlayer(moveX, moveY);
     }
@@ -92,23 +85,32 @@ public class PlayerInputComponent implements IRealTimeComponent, KeyListener
         {
             leftPressed = true;
             currentMovementType = MovementType.LEFT;
+            lastPressedDirection = MovementType.LEFT;
         }
         if(e.getKeyCode() == KeyEvent.VK_RIGHT)
         {
             rightPressed = true;
             currentMovementType = MovementType.RIGHT;
+            lastPressedDirection = MovementType.RIGHT;
+
         }
         if(e.getKeyCode() == KeyEvent.VK_UP)
         {
             upPressed = true;
             currentMovementType = MovementType.UP;
+            lastPressedDirection = MovementType.UP;
+
         }
         if(e.getKeyCode() == KeyEvent.VK_DOWN)
         {
             downPressed = true;
             currentMovementType = MovementType.DOWN;
+            lastPressedDirection = MovementType.DOWN;
         }
-
+        if(e.getKeyCode() == KeyEvent.VK_SPACE)
+        {
+            firePressed = true;
+        }
     }
 
     // if user double clicks, this function makes sure
@@ -161,10 +163,6 @@ public class PlayerInputComponent implements IRealTimeComponent, KeyListener
                     ? MovementType.STOP
                     : currentMovementType;
             checkDoubleClick();
-        }
-        if(e.getKeyCode() == KeyEvent.VK_SPACE)
-        {
-            firePressed = false;
         }
     }
 }
