@@ -4,13 +4,12 @@ import java.awt.*;
 
 import Components.AbstractPatrolStrategy;
 import Components.SpriteComponent;
+import Constants.CollisionActorType;
 import Util.Position2D;
 
 
 public class Enemy extends AbstractActor
 {
-    // TODO:
-
 
     public Enemy(Position2D<Float> pos, float szX, float szY)
     {
@@ -23,11 +22,26 @@ public class Enemy extends AbstractActor
         }
     }
 
-    public void update(float deltaT)
+    public CollisionActorType getRightActorType()
     {
-
-        // TODO: or delete
+        return CollisionActorType.ENEMY;
     }
+
+    public void smash(AbstractActor rightActor)
+    {
+        switch (rightActor.getRightActorType()) {
+            case PLAYER:
+                rightActor.setActorDead();
+                break;
+            case BULLET:
+                // die
+                break;
+            case WALL:
+                super.moveIfCollide(rightActor);
+                break;
+        }
+    }
+
 
     @Override
     public boolean isDead()

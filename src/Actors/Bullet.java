@@ -3,6 +3,7 @@ package Actors;
 import java.awt.*;
 
 import Components.SpriteComponent;
+import Constants.CollisionActorType;
 import Util.Position2D;
 
 public class Bullet extends AbstractActor
@@ -19,11 +20,11 @@ public class Bullet extends AbstractActor
         }
     }
 
-    @Override
-    public void update(float deltaT)
+    public  CollisionActorType getRightActorType()
     {
-        // TODO: or delete
+        return CollisionActorType.BULLET;
     }
+
 
     @Override
     public void update(float deltaT, Graphics2D g)

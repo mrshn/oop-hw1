@@ -3,6 +3,7 @@ package Actors;
 import java.awt.*;
 
 import Components.SpriteComponent;
+import Constants.CollisionActorType;
 import Util.Position2D;
 
 
@@ -19,16 +20,17 @@ public class Player extends AbstractActor
         }
     }
 
+    public CollisionActorType getRightActorType()
+    {
+        return CollisionActorType.PLAYER;
+    }
+
     public void movePlayer(float moveX, float moveY)
     {
         super.getPos().x += moveX ;
         super.getPos().y += moveY ;
     }
 
-    public void update(float deltaT)
-    {
-        // TODO: or delete
-    }
 
     @Override
     public void update(float deltaT, Graphics2D g)

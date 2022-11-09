@@ -4,6 +4,7 @@ import Components.AbstractPatrolStrategy;
 import Components.IRealTimeComponent;
 
 import Components.SpriteComponent;
+import Constants.CollisionActorType;
 import Util.AABB;
 import Util.Position2D;
 
@@ -37,6 +38,12 @@ public abstract class AbstractActor extends AABB implements IRealTimeComponent
         return isActorDead;
     }
 
+    public void setActorDead()
+    {
+        isActorDead = true;
+        System.out.println("ananannana");
+    }
+
     public void update(float deltaT)
     {
         // TODO: or delete
@@ -48,12 +55,21 @@ public abstract class AbstractActor extends AABB implements IRealTimeComponent
         // TODO:
     }
 
+    public  void smash(AbstractActor rightActor){}
+
+    public abstract CollisionActorType getRightActorType();
+ /*   public abstract boolean die();
+    public abstract boolean kill();
+    public abstract boolean push();
+
+
+
+
+
     public void smash(AbstractActor rhs){
        if(movement != null) {
            movement.changeDirection();
        }
     }
-
-
-
+*/
 }

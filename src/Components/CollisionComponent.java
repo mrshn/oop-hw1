@@ -8,20 +8,19 @@ import java.util.List;
 public class CollisionComponent implements IRealTimeComponent
 {
 
-    private final List<AbstractActor> actors = new ArrayList<>();
+    private final List<AbstractActor> allActors = new ArrayList<>();
 
     private static final CollisionComponent collisionComponent = new CollisionComponent();
 
     private CollisionComponent(){}
 
-
     @Override
     public void update(float deltaT)
     {
-        for(AbstractActor actor: actors){
-            for(AbstractActor actor2: actors){
-                if(!actor.equals(actor2) && !actor.isDead() && !actor2.isDead() && actor.collides(actor2)){
-                    notifyCollision(actor, actor2);
+        for(AbstractActor leftActor: allActors){
+            for(AbstractActor rightActor: allActors){
+                if(!leftActor.equals(rightActor) && !leftActor.isDead() && !rightActor.isDead() && leftActor.collides(rightActor)){
+                    notifyCollision(leftActor, rightActor);
                 }
             }
         }
@@ -30,36 +29,40 @@ public class CollisionComponent implements IRealTimeComponent
     /**
      * @return Singleton Object
      */
-    public static CollisionComponent getInstance(){
+    public static CollisionComponent getInstance()
+    {
         return collisionComponent;
     }
 
     /**
-     * @param actor Add subscription list
+     * @param
      */
     public void subscribe(AbstractActor actor){
-        actors.add(actor);
+        allActors.add(actor);
     }
 
     /**
-     * @param actor Remove from subscription list
+     * @param
      */
     public void unsubscribe(AbstractActor actor){
-        actors.remove(actor);
+        allActors.remove(actor);
     }
 
     /**
-     * @param actor Main collided actor
-     * @param actor2 Main actor collided with actor2
+     * @param
+     * @param
      */
-    public void notifyCollision(AbstractActor actor, AbstractActor actor2){
-        actor.smash(actor2);
+    public void notifyCollision(AbstractActor leftActor, AbstractActor rightActor){
+        leftActor.smash(rightActor);
     }
 
     /**
-     * Clear all subscription list.
+     *
      */
-    public void clearAll(){ actors.clear(); }
+    public void clearAll()
+    {
+        allActors.clear();
+    }
 
 
 }

@@ -3,6 +3,7 @@ package Actors;
 import java.awt.*;
 
 import Components.SpriteComponent;
+import Constants.CollisionActorType;
 import Util.Position2D;
 
 
@@ -20,10 +21,11 @@ public class PowerUp extends AbstractActor
         }
     }
 
-    public void update(float deltaT)
+    public CollisionActorType getRightActorType()
     {
-        // TODO: or delete
+        return CollisionActorType.POWERUP;
     }
+
 
     @Override
     public void update(float deltaT, Graphics2D g)

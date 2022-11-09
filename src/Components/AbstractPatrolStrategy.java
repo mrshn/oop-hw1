@@ -4,7 +4,6 @@ import Util.Position2D;
 
 public abstract class AbstractPatrolStrategy implements IRealTimeComponent
 {
-    // TODO:
     protected  Position2D<Float> currentPosition;
     private boolean goAhead;
     protected int speed;

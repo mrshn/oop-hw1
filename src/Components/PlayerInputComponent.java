@@ -108,10 +108,7 @@ public class PlayerInputComponent implements IRealTimeComponent, KeyListener
             downPressed = true;
             currentMovementType = MovementType.DOWN;
         }
-        if(e.getKeyCode() == KeyEvent.VK_SPACE)
-        {
-            firePressed = true;
-        }
+
     }
 
     // if user double clicks, this function makes sure

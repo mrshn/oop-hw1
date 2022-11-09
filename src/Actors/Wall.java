@@ -3,6 +3,7 @@ package Actors;
 import java.awt.*;
 
 import Components.SpriteComponent;
+import Constants.CollisionActorType;
 import Util.Position2D;
 
 public class Wall extends AbstractActor
@@ -19,9 +20,9 @@ public class Wall extends AbstractActor
         }
     }
 
-    public void update(float deltaT)
+    public CollisionActorType getRightActorType()
     {
-        // TODO: or delete
+        return CollisionActorType.WALL;
     }
 
     @Override
