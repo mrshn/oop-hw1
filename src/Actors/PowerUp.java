@@ -7,7 +7,6 @@ import Constants.CollisionActorType;
 import Constants.PathConstants;
 import Util.Position2D;
 
-
 public class PowerUp extends AbstractActor
 {
 
@@ -15,20 +14,22 @@ public class PowerUp extends AbstractActor
     {
         super(pos, szX, szY);
         try {
-            sprite = new SpriteComponent(PathConstants.POWERUPPATH);
+            sprite = new SpriteComponent(PathConstants.POWER_UP_PATH);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
+    @Override
     public CollisionActorType getRightActorType()
     {
-        return CollisionActorType.POWERUP;
+        return CollisionActorType.POWER_UP;
     }
 
-    public void smash(AbstractActor rightActor)
+    @Override
+    public void aCollisionIsHappened(AbstractActor collidedActor)
     {
-        switch (rightActor.getRightActorType()) {
+        switch (collidedActor.getRightActorType()) {
             case PLAYER:
                 super.setActorDead();
         }

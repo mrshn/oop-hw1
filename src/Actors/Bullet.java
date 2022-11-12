@@ -20,33 +20,20 @@ public class Bullet extends AbstractActor
         bulletLifeTime = ActorConfigurations.BULLET_LIFE_TIME;
         currentBulletDirection = MovementType.RIGHT;
         try {
-            sprite = new SpriteComponent(PathConstants.BULLETPATH);
+            sprite = new SpriteComponent(PathConstants.BULLET_PATH);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void fireBulletInDirection(MovementType bulletDirection)
+    @Override
+    public  CollisionActorType getRightActorType()
     {
-        // if no direction is clicked, Player shoots right as default
-        bulletDirection =  bulletDirection == MovementType.STOP
-                ? MovementType.RIGHT : bulletDirection;
-        currentBulletDirection = bulletDirection;
+        return CollisionActorType.BULLET;
     }
 
-    public void moveBullet(float moveX, float moveY)
-    {
-        super.getPos().x += moveX ;
-        super.getPos().y += moveY ;
-    }
-
-    public void update(float deltaT, Graphics2D g)
-    {
-        if(bulletLifeTime <= 0) {
-            super.setActorDead();
-        }
-        bulletLifeTime -= deltaT;
-
+    @Override
+    public void update(float deltaT) {
         float moveX = 0, moveY = 0;
         float totalMovement = deltaT * ActorConfigurations.BULLET_SPEED;
 
@@ -63,18 +50,30 @@ public class Bullet extends AbstractActor
             case RIGHT:
                 moveX = totalMovement;
         }
-        moveBullet( moveX,  moveY);
+        super.moveActor( moveX ,  moveY);
+    }
+
+    @Override
+    public void update(float deltaT, Graphics2D g)
+    {
+        if(bulletLifeTime <= 0) {
+            super.setActorDead();
+            return;
+        }
+        bulletLifeTime -= deltaT;
+        update(deltaT);
         super.update(deltaT,g);
     }
 
-    public  CollisionActorType getRightActorType()
-    {
-        return CollisionActorType.BULLET;
-    }
+    @Override
+    public void aCollisionIsHappened(AbstractActor collidedActor) {}
 
-    public void smash(AbstractActor rightActor)
+    public void fireBulletInDirection(MovementType bulletDirection)
     {
-
+        // if no direction is clicked, Player shoots right as default
+        bulletDirection =  bulletDirection == MovementType.STOP
+                ? MovementType.RIGHT : bulletDirection;
+        currentBulletDirection = bulletDirection;
     }
 
 }

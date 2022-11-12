@@ -1,6 +1,7 @@
 package Actors;
 
 import Components.AbstractPatrolStrategy;
+import Components.ICollisionListener;
 import Components.IRealTimeComponent;
 
 import Components.SpriteComponent;
@@ -10,10 +11,9 @@ import Util.Position2D;
 
 import java.awt.*;
 
-public abstract class AbstractActor extends AABB implements IRealTimeComponent
+public abstract class AbstractActor extends AABB implements IRealTimeComponent, ICollisionListener
 {
     protected SpriteComponent sprite;
-    protected AbstractPatrolStrategy movement;
     private boolean isActorDead;
 
     public AbstractActor(Position2D<Float> pos, float szX, float szY)
@@ -23,27 +23,56 @@ public abstract class AbstractActor extends AABB implements IRealTimeComponent
         sprite = null;
     }
 
-    public boolean isDead()
-    {
-        return isActorDead;
-    }
+    /**
+     * Returs the type of the actor
+     **/
+    public abstract CollisionActorType getRightActorType();
 
-    public void setActorDead()
-    {
-        isActorDead = true;
-    }
+    /**
+     * Overrided according to the Actors movement behaviour
+     * @param deltaT is the time passed since last update
+     **/
+    public void update(float deltaT) {}
 
-    public void update(float deltaT)
-    {
-    }
-
+    /**
+     * Overrided according to the Actors movement behaviour
+     * @param g is used for sprite
+     * @param deltaT is the time passed since last update
+     **/
     public void update(float deltaT, Graphics2D g)
     {
         sprite.draw(g, this);
     }
 
-    public abstract void smash(AbstractActor rightActor);
+    /**
+     * Simply updates the position of the AABB
+     **/
+    public void moveActor(float moveX, float moveY)
+    {
+        super.getPos().x += moveX ;
+        super.getPos().y += moveY ;
+    }
 
-    public abstract CollisionActorType getRightActorType();
+    /**
+     * Returns if actor is dead or not
+     **/
+    public boolean isDead()
+    {
+        return isActorDead;
+    }
+
+    /**
+     * Called when actor is dead
+     **/
+    public void setActorDead()
+    {
+        isActorDead = true;
+    }
+
+    /**
+     * Called when an AABB collides other
+     * @param collidedActor is the collided actor
+     **/
+    public abstract void aCollisionIsHappened(AbstractActor collidedActor);
 
 }

@@ -9,6 +9,7 @@ public abstract class AbstractPatrolStrategy implements IRealTimeComponent
     private boolean goAhead;
     protected float speed;
 
+
     public AbstractPatrolStrategy(Position2D<Float> initialPos)
     {
         currentPosition = initialPos;

@@ -4,6 +4,6 @@ public enum CollisionActorType {
     PLAYER,
     ENEMY,
     WALL,
-    POWERUP,
+    POWER_UP,
     BULLET
 };

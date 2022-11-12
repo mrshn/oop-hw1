@@ -11,45 +11,56 @@ import Util.Position2D;
 
 public class Enemy extends AbstractActor
 {
+    protected AbstractPatrolStrategy movement;
+
     public Enemy(Position2D<Float> pos, float szX, float szY)
     {
         super(pos, szX, szY);
-        super.movement = null;
+        movement = null;
         try {
-            sprite = new SpriteComponent(PathConstants.ENEMYPATH);
+            sprite = new SpriteComponent(PathConstants.ENEMY_PATH);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
+    @Override
     public CollisionActorType getRightActorType()
     {
         return CollisionActorType.ENEMY;
     }
 
-    public void smash(AbstractActor rightActor)
-    {
-        switch (rightActor.getRightActorType()) {
-            case PLAYER:
-                rightActor.setActorDead();
-                break;
-            case WALL:
-                super.movement.changeDirection();
-                super.moveIfCollide(rightActor);
-                break;
+    @Override
+    public void update(float deltaT) {
+        if(movement != null) {
+            movement.update(deltaT);
         }
     }
 
     @Override
     public void update(float deltaT, Graphics2D g)
     {
-        if(super.movement != null) {super.movement.update(deltaT);}
+        update(deltaT);
         sprite.draw(g, this);
+    }
+
+    @Override
+    public void aCollisionIsHappened(AbstractActor collidedActor)
+    {
+        switch (collidedActor.getRightActorType()) {
+            case PLAYER:
+                collidedActor.setActorDead();
+                break;
+            case WALL:
+                movement.changeDirection();
+                super.moveIfCollide(collidedActor);
+                break;
+        }
     }
 
     public void setMovement(AbstractPatrolStrategy rhs)
     {
-        super.movement = rhs;
+        movement = rhs;
     }
 
 }

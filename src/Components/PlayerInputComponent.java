@@ -22,7 +22,6 @@ public class PlayerInputComponent implements IRealTimeComponent, KeyListener
     private MovementType currentMovementType;
     private MovementType lastPressedDirection;
 
-
     private static final PlayerInputComponent playerInputComponent = new PlayerInputComponent();
 
     private PlayerInputComponent()
@@ -45,34 +44,20 @@ public class PlayerInputComponent implements IRealTimeComponent, KeyListener
         this.player = rhs;
     }
 
-    @Override
-    public void update(float deltaT)
-    {
-        float moveX = 0, moveY = 0;
-        float totalMovement = deltaT * ActorConfigurations.PLAYER_SPEED;
-
-        switch(currentMovementType) {
-            case UP:
-                moveY -= totalMovement;
-                break;
-            case DOWN:
-                moveY = totalMovement;
-                break;
-            case LEFT:
-                moveX -= totalMovement;
-                break;
-            case RIGHT:
-                moveX = totalMovement;
-        }
-
+    public void checlIfBulletIsFired(){
         if(firePressed) {
             firePressed = false;
             Bullet bullet = new Bullet(new Position2D<Float>(player.getPos().x, player.getPos().y), player.getSizeX(), player.getSizeY());
             bullet.fireBulletInDirection( currentMovementType ==MovementType.STOP ? lastPressedDirection :currentMovementType  );
             BulletEnemyCollisionHandler.GetInstance().addBullet(bullet);
         }
+    }
 
-        player.movePlayer(moveX, moveY);
+    @Override
+    public void update(float deltaT)
+    {
+        player.updatePlayerWithMovementType(currentMovementType,deltaT);
+        checlIfBulletIsFired();
     }
 
     @Override

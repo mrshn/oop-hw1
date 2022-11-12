@@ -40,14 +40,12 @@ public class CollisionComponent implements IRealTimeComponent
 
 
     public void notifyCollision(AbstractActor leftActor, AbstractActor rightActor){
-        leftActor.smash(rightActor);
+        leftActor.aCollisionIsHappened(rightActor);
     }
-
 
     public void clearAll()
     {
         allActors.clear();
     }
-
 
 }

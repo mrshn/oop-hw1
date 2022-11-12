@@ -14,26 +14,25 @@ public class Wall extends AbstractActor
     {
         super(pos, szX, szY);
         try {
-            sprite = new SpriteComponent(PathConstants.WALLPATH);
+            sprite = new SpriteComponent(PathConstants.WALL_PATH);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
+    @Override
     public CollisionActorType getRightActorType()
     {
         return CollisionActorType.WALL;
     }
 
-    public void smash(AbstractActor rightActor)
+    @Override
+    public void aCollisionIsHappened(AbstractActor collidedActor)
     {
-        switch (rightActor.getRightActorType()) {
-    /*        case BULLET:
-                rightActor.setActorDead();
-                break; */
+        switch (collidedActor.getRightActorType()) {
             case ENEMY:
             case PLAYER:
-                super.moveIfCollide(rightActor);
+                super.moveIfCollide(collidedActor);
                 break;
         }
     }
