@@ -8,7 +8,7 @@ import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
 
-public class SpriteComponent implements IDrawable
+public class SpriteComponent  implements IDrawable
 {
     private BufferedImage img;
 

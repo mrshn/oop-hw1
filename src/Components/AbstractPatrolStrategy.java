@@ -3,18 +3,22 @@ package Components;
 import Constants.ActorConfigurations;
 import Util.Position2D;
 
-public abstract class AbstractPatrolStrategy implements IRealTimeComponent
+public abstract class AbstractPatrolStrategy extends RealTimeDecorator implements IPatrolStrategy
 {
     protected  Position2D<Float> currentPosition;
     private boolean goAhead;
     protected float speed;
 
-
-    public AbstractPatrolStrategy(Position2D<Float> initialPos)
+    public AbstractPatrolStrategy(IRealTimeComponent source)
     {
-        currentPosition = initialPos;
-        speed = ActorConfigurations.ENEMY_SPEED;
-        goAhead = false;
+        super(source);
+    }
+
+    public void  initialize(Position2D<Float> initialPos)
+    {
+          currentPosition = initialPos;
+          speed = ActorConfigurations.ENEMY_SPEED;
+          goAhead = false;
     }
 
     public boolean  getIsGoAhead()

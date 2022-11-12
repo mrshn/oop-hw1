@@ -67,6 +67,7 @@ public abstract class AbstractActor extends AABB implements IRealTimeComponent, 
     public void setActorDead()
     {
         isActorDead = true;
+
     }
 
     /**

@@ -5,9 +5,9 @@ import Util.Position2D;
 public class VerticalPatrolStrategy extends AbstractPatrolStrategy
 {
 
-    public VerticalPatrolStrategy(Position2D<Float> initialPos)
+    public VerticalPatrolStrategy(IRealTimeComponent source)
     {
-        super(initialPos);
+        super(source);
     }
 
     @Override

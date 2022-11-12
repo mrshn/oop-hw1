@@ -10,7 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 
-public class PlayerInputComponent implements IRealTimeComponent, KeyListener
+public class PlayerInputComponent extends RealTimeDecorator implements  KeyListener
 {
     // Internal States
     private boolean leftPressed;
@@ -21,24 +21,30 @@ public class PlayerInputComponent implements IRealTimeComponent, KeyListener
     private Player player;
     private MovementType currentMovementType;
     private MovementType lastPressedDirection;
+    BulletsInCirculationManager bulletsInCirculationManager;
 
-    private static final PlayerInputComponent playerInputComponent = new PlayerInputComponent();
+  //  private static final PlayerInputComponent playerInputComponent = new PlayerInputComponent();
 
-    private PlayerInputComponent()
+    public PlayerInputComponent(IRealTimeComponent source)
     {
-        currentMovementType = MovementType.STOP;
+        super(source);
+    }
 
+    public void defaultConfiguration() {
+        currentMovementType = MovementType.STOP;
         leftPressed = false;
         rightPressed = false;
         upPressed = false;
         downPressed = false;
         firePressed = false;
+        bulletsInCirculationManager = BulletsInCirculationManager.GetInstance();
+        bulletsInCirculationManager.clearBullets();
     }
-
+/*
     public static PlayerInputComponent GetInstance()
     {
         return playerInputComponent;
-    }
+    }*/
 
     public void setPlayer(Player rhs) {
         this.player = rhs;
@@ -49,7 +55,7 @@ public class PlayerInputComponent implements IRealTimeComponent, KeyListener
             firePressed = false;
             Bullet bullet = new Bullet(new Position2D<Float>(player.getPos().x, player.getPos().y), player.getSizeX(), player.getSizeY());
             bullet.fireBulletInDirection( currentMovementType ==MovementType.STOP ? lastPressedDirection :currentMovementType  );
-            BulletEnemyCollisionHandler.GetInstance().addBullet(bullet);
+            bulletsInCirculationManager.addBullet(bullet);
         }
     }
 

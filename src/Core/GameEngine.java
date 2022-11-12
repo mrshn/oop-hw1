@@ -23,10 +23,16 @@ public class GameEngine
     // Add extra components if you like
     private ArrayList<IRealTimeComponent> miscComponents;
 
-
-    private void subsCollisions()
+    // Used to create new player
+    private Player getNewPlayerFromMap(GameMapLoader map)
     {
-        CollisionComponent collisionInstance =  CollisionComponent.GetInstance();
+        AABB AABBplayer = map.getLoadedPlayerAABB();
+        return new Player(AABBplayer.getPos(),AABBplayer.getSizeX(),AABBplayer.getSizeY());
+    }
+
+    private void setCollisions(GameMapLoader map )
+    {
+        CollisionComponent collisionInstance = new CollisionComponent( getNewPlayerFromMap(map) );
         collisionInstance.clearAll();
         collisionInstance.subscribe(player);
         enemies.forEach( eachEnemy -> collisionInstance.subscribe(eachEnemy) );
@@ -36,45 +42,66 @@ public class GameEngine
         this.miscComponents.add(collisionInstance);
     }
 
-    private void setReadValues(GameMapLoader map )
+    private void setEnemies(GameMapLoader map)
     {
-
-        map.getLoadedWallAABBs().forEach( eachWall ->  this.walls.add(  new Wall(eachWall.getPos(),eachWall.getSizeX(),eachWall.getSizeY()) ) );
         map.getLoadedEnemyStationaryAABBs().forEach( eachEnemy ->  this.enemies.add(  new Enemy(eachEnemy.getPos(),eachEnemy.getSizeX(),eachEnemy.getSizeY()) ) );
-
         map.getLoadedEnemyXAABBs().forEach(
                 eachEnemy ->
-                        {
-                            Enemy enemy = new Enemy(eachEnemy.getPos(), eachEnemy.getSizeX(), eachEnemy.getSizeY());
-                            enemy.setMovement( new HorizontalPatrolStrategy(eachEnemy.getPos()) );
-                            this.enemies.add(enemy);
-                        }
-        );
+                {
+                    Enemy enemy = new Enemy(eachEnemy.getPos(), eachEnemy.getSizeX(), eachEnemy.getSizeY());
 
+                    HorizontalPatrolStrategy horizontalPatrolStrategy =  new HorizontalPatrolStrategy( getNewPlayerFromMap(map) );
+                    horizontalPatrolStrategy.initialize(eachEnemy.getPos());
+                    enemy.setMovement(horizontalPatrolStrategy );
+
+                    enemy.setMovement( horizontalPatrolStrategy);
+                    this.enemies.add(enemy);
+                }
+        );
         map.getLoadedEnemyYAABBs().forEach(
                 eachEnemy ->
-                        {
-                            Enemy enemy = new Enemy(eachEnemy.getPos(), eachEnemy.getSizeX(), eachEnemy.getSizeY());
-                            enemy.setMovement( new VerticalPatrolStrategy(eachEnemy.getPos()) );
-                            this.enemies.add(enemy);
-                        }
+                {
+                    Enemy enemy = new Enemy(eachEnemy.getPos(), eachEnemy.getSizeX(), eachEnemy.getSizeY());
+                    VerticalPatrolStrategy verticalPatrolStrategy =  new VerticalPatrolStrategy( getNewPlayerFromMap(map) );
+                    verticalPatrolStrategy.initialize(eachEnemy.getPos());
+                    enemy.setMovement(verticalPatrolStrategy );
+                    this.enemies.add(enemy);
+                }
         );
-        map.getLoadedPowerUpAABBs().forEach( eachPowerUp ->  this.powerUps.add(  new PowerUp(eachPowerUp.getPos(),eachPowerUp.getSizeX(),eachPowerUp.getSizeY()) ) );
+    }
 
-        AABB AABBplayer = map.getLoadedPlayerAABB();
-        this.player = new Player(AABBplayer.getPos(),AABBplayer.getSizeX(),AABBplayer.getSizeY());
-
-        PlayerInputComponent playerInputInstance = PlayerInputComponent.GetInstance();
-        playerInputInstance.setPlayer(this.player);
+    private void setPlayerInput(GameMapLoader map)
+    {
+        PlayerInputComponent playerInputInstance = new PlayerInputComponent( getNewPlayerFromMap(map) );
+        playerInputInstance.defaultConfiguration();
+        playerInputInstance.setPlayer( getNewPlayerFromMap(map) );
         GameWindow.GetInstance().attachKeyListener(playerInputInstance);
         this.miscComponents.add(playerInputInstance);
 
-        subsCollisions();
+    }
 
-        BulletEnemyCollisionHandler  bulletEnemyCollisionInstance = BulletEnemyCollisionHandler.GetInstance();
+    private void setBulletEnemyCollisions(GameMapLoader map)
+    {
+
+        BulletEnemyCollisionHandler  bulletEnemyCollisionInstance = new BulletEnemyCollisionHandler( getNewPlayerFromMap(map) );
         bulletEnemyCollisionInstance.initializeBulletEnemyCollision( this.enemies, this.bulletsInCirculation, this.walls);
         this.miscComponents.add(bulletEnemyCollisionInstance);
+    }
 
+    private void setReadValues(GameMapLoader map )
+    {
+
+        this.player = getNewPlayerFromMap(map);
+
+        map.getLoadedWallAABBs().forEach( eachWall ->  this.walls.add(  new Wall(eachWall.getPos(),eachWall.getSizeX(),eachWall.getSizeY()) ) );
+        map.getLoadedPowerUpAABBs().forEach( eachPowerUp ->  this.powerUps.add(  new PowerUp(eachPowerUp.getPos(),eachPowerUp.getSizeX(),eachPowerUp.getSizeY()) ) );
+        //Initialize singleton class for bullets in circulation
+        BulletsInCirculationManager.GetInstance().initialize(this.bulletsInCirculation);
+
+        setEnemies(map);
+        setPlayerInput(map);
+        setCollisions(map);
+        setBulletEnemyCollisions(map);
     }
 
     private void ResetGame()
@@ -83,7 +110,7 @@ public class GameEngine
         walls.clear();
         enemies.clear();
         powerUps.clear();
-        miscComponents.clear(); // TODO: check
+        miscComponents.clear();
 
         GameMapLoader map = new GameMapLoader(screenSize);
         boolean mapOK = map.loadMap(this.currentMap);
@@ -95,8 +122,6 @@ public class GameEngine
             System.out.println("Util.Map Load Failed!");
             System.exit(1);
         }
-
-        // TODO: Add code if your design requires so
 
     }
 

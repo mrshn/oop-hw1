@@ -5,9 +5,9 @@ import Util.Position2D;
 public class HorizontalPatrolStrategy extends AbstractPatrolStrategy
 {
 
-    public HorizontalPatrolStrategy(Position2D<Float> initialPos)
+    public HorizontalPatrolStrategy(IRealTimeComponent source)
     {
-        super(initialPos);
+        super(source);
     }
 
     @Override

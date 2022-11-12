@@ -4,5 +4,5 @@ import Actors.AbstractActor;
 
 public interface ICollisionListener
 {
-    public void aCollisionIsHappened(AbstractActor rightActor);
+    public void aCollisionIsHappened(AbstractActor collidedActor);
 }

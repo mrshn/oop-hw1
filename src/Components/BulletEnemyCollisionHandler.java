@@ -7,36 +7,28 @@ import Actors.Wall;
 import java.util.List;
 
 
-public class BulletEnemyCollisionHandler implements IRealTimeComponent
+public class BulletEnemyCollisionHandler  extends RealTimeDecorator
 {
-    private List<Bullet> bullets;
+    BulletsInCirculationManager bulletsInCirculationManager;
     private List<Enemy> enemies;
     private List<Wall> walls;
 
-    private BulletEnemyCollisionHandler() {}
-
-    private static final BulletEnemyCollisionHandler handler = new BulletEnemyCollisionHandler();
+    public BulletEnemyCollisionHandler(IRealTimeComponent source) {
+        super(source);
+    }
 
     public void initializeBulletEnemyCollision( List<Enemy> enemies,List<Bullet> bullets, List<Wall> walls){
+        bulletsInCirculationManager = BulletsInCirculationManager.GetInstance();
+        bulletsInCirculationManager.clearBullets();
+
         this.enemies = enemies;
-        this.bullets = bullets;
         this.walls = walls;
-    }
-
-    public static BulletEnemyCollisionHandler GetInstance()
-    {
-        return handler;
-    }
-
-    public void addBullet(Bullet bullet)
-    {
-        this.bullets.add(bullet);
     }
 
     @Override
     public void update(float deltaT)
     {
-        for(Bullet bullet : this.bullets) {
+        for(Bullet bullet : this.bulletsInCirculationManager.getBullets()) {
             for(Enemy enemy : this.enemies) {
                 if(enemy.collides(bullet)) {
                     enemy.setActorDead(); bullet.setActorDead();
