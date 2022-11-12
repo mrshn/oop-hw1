@@ -21,7 +21,7 @@ public class Wall extends AbstractActor
     }
 
     @Override
-    public CollisionActorType getRightActorType()
+    public CollisionActorType getActorType()
     {
         return CollisionActorType.WALL;
     }
@@ -29,7 +29,7 @@ public class Wall extends AbstractActor
     @Override
     public void aCollisionIsHappened(AbstractActor collidedActor)
     {
-        switch (collidedActor.getRightActorType()) {
+        switch (collidedActor.getActorType()) {
             case ENEMY:
             case PLAYER:
                 super.moveIfCollide(collidedActor);

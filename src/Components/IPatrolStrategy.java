@@ -2,8 +2,8 @@ package Components;
 
 import Util.Position2D;
 
-public interface IPatrolStrategy  {
-
+public interface IPatrolStrategy
+{
     /**
      * @param initialPos is the initial Position of the moving object
      * Initializes a moving strategy to the object
@@ -14,6 +14,5 @@ public interface IPatrolStrategy  {
      * Reverts the direction of the moving object according to the Strategy
      **/
     public void changeDirection();
-
 
 }

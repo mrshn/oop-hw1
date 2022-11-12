@@ -9,7 +9,11 @@ import java.util.List;
 
 public class BulletEnemyCollisionHandler  extends RealTimeDecorator
 {
+    /**
+     * An Aggregation relationship with a singleton class which manages bullets in circulation
+     */
     BulletsInCirculationManager bulletsInCirculationManager;
+
     private List<Enemy> enemies;
     private List<Wall> walls;
 
@@ -17,7 +21,8 @@ public class BulletEnemyCollisionHandler  extends RealTimeDecorator
         super(source);
     }
 
-    public void initializeBulletEnemyCollision( List<Enemy> enemies,List<Bullet> bullets, List<Wall> walls){
+    public void initialize( List<Enemy> enemies, List<Wall> walls)
+    {
         bulletsInCirculationManager = BulletsInCirculationManager.GetInstance();
         bulletsInCirculationManager.clearBullets();
 
@@ -30,13 +35,16 @@ public class BulletEnemyCollisionHandler  extends RealTimeDecorator
     {
         for(Bullet bullet : this.bulletsInCirculationManager.getBullets()) {
             for(Enemy enemy : this.enemies) {
-                if(enemy.collides(bullet)) {
-                    enemy.setActorDead(); bullet.setActorDead();
+                if(bullet.collides(enemy)) {
+                    bullet.setActorDead();
+                    enemy.setActorDead();
+                    break;
                 }
             }
             for(Wall wall : this.walls) {
-                if(wall.collides(bullet)) {
+                if(bullet.collides(wall)) {
                     bullet.setActorDead();
+                    break;
                 }
             }
         }

@@ -12,7 +12,6 @@ import java.awt.event.KeyListener;
 
 public class PlayerInputComponent extends RealTimeDecorator implements  KeyListener
 {
-    // Internal States
     private boolean leftPressed;
     private boolean rightPressed;
     private boolean upPressed;
@@ -23,15 +22,15 @@ public class PlayerInputComponent extends RealTimeDecorator implements  KeyListe
     private MovementType lastPressedDirection;
     BulletsInCirculationManager bulletsInCirculationManager;
 
-  //  private static final PlayerInputComponent playerInputComponent = new PlayerInputComponent();
-
     public PlayerInputComponent(IRealTimeComponent source)
     {
         super(source);
     }
 
-    public void defaultConfiguration() {
+    public void defaultConfiguration()
+    {
         currentMovementType = MovementType.STOP;
+        lastPressedDirection = MovementType.STOP;
         leftPressed = false;
         rightPressed = false;
         upPressed = false;
@@ -40,21 +39,17 @@ public class PlayerInputComponent extends RealTimeDecorator implements  KeyListe
         bulletsInCirculationManager = BulletsInCirculationManager.GetInstance();
         bulletsInCirculationManager.clearBullets();
     }
-/*
-    public static PlayerInputComponent GetInstance()
-    {
-        return playerInputComponent;
-    }*/
 
     public void setPlayer(Player rhs) {
         this.player = rhs;
     }
 
-    public void checlIfBulletIsFired(){
+    public void checkIfBulletIsFired()
+    {
         if(firePressed) {
             firePressed = false;
-            Bullet bullet = new Bullet(new Position2D<Float>(player.getPos().x, player.getPos().y), player.getSizeX(), player.getSizeY());
-            bullet.fireBulletInDirection( currentMovementType ==MovementType.STOP ? lastPressedDirection :currentMovementType  );
+            Bullet bullet = new Bullet(new Position2D<Float>(player.getPos().x, player.getPos().y), ActorConfigurations.BULLET_WIDTH_AND_HEIGHT, ActorConfigurations.BULLET_WIDTH_AND_HEIGHT);
+            bullet.fireBulletInDirection( currentMovementType == MovementType.STOP ? lastPressedDirection : currentMovementType  );
             bulletsInCirculationManager.addBullet(bullet);
         }
     }
@@ -63,7 +58,7 @@ public class PlayerInputComponent extends RealTimeDecorator implements  KeyListe
     public void update(float deltaT)
     {
         player.updatePlayerWithMovementType(currentMovementType,deltaT);
-        checlIfBulletIsFired();
+        checkIfBulletIsFired();
     }
 
     @Override

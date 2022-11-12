@@ -1,5 +1,8 @@
 package Constants;
 
+/**
+ * This Class stores the file information
+ */
 public final class PathConstants {
 
     public static final String BULLET_PATH = "./data/img/bullet.png";
@@ -8,5 +11,4 @@ public final class PathConstants {
     public static final String POWER_UP_PATH = "./data/img/scroll.png";
     public static final String WALL_PATH = "./data/img/wall.png";
 
-    private PathConstants() { }
 }

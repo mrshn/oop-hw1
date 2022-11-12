@@ -21,7 +21,7 @@ public class PowerUp extends AbstractActor
     }
 
     @Override
-    public CollisionActorType getRightActorType()
+    public CollisionActorType getActorType()
     {
         return CollisionActorType.POWER_UP;
     }
@@ -29,7 +29,7 @@ public class PowerUp extends AbstractActor
     @Override
     public void aCollisionIsHappened(AbstractActor collidedActor)
     {
-        switch (collidedActor.getRightActorType()) {
+        switch (collidedActor.getActorType()) {
             case PLAYER:
                 super.setActorDead();
         }

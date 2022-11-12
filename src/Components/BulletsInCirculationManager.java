@@ -6,6 +6,9 @@ import java.util.ArrayList;
 
 public class BulletsInCirculationManager {
 
+    /**
+     *  Bullets in circulation
+     */
     private ArrayList<Bullet> bullets;
 
     private static final BulletsInCirculationManager instance = new BulletsInCirculationManager();

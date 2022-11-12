@@ -11,7 +11,14 @@ import Util.Position2D;
 
 public class Bullet extends AbstractActor
 {
+    /**
+     * Identifier for how long the bullet should be visible
+     */
     private double bulletLifeTime;
+
+    /**
+     * Identifier for the direction of the bullet
+     */
     private MovementType currentBulletDirection ;
 
     public Bullet(Position2D<Float> pos, float szX, float szY)
@@ -27,7 +34,7 @@ public class Bullet extends AbstractActor
     }
 
     @Override
-    public  CollisionActorType getRightActorType()
+    public  CollisionActorType getActorType()
     {
         return CollisionActorType.BULLET;
     }

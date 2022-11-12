@@ -11,6 +11,9 @@ import Util.Position2D;
 
 public class Enemy extends AbstractActor
 {
+    /**
+     * Identifier for the Patrol Strategy Enemy has
+     */
     protected AbstractPatrolStrategy movement;
 
     public Enemy(Position2D<Float> pos, float szX, float szY)
@@ -25,7 +28,7 @@ public class Enemy extends AbstractActor
     }
 
     @Override
-    public CollisionActorType getRightActorType()
+    public CollisionActorType getActorType()
     {
         return CollisionActorType.ENEMY;
     }
@@ -47,7 +50,7 @@ public class Enemy extends AbstractActor
     @Override
     public void aCollisionIsHappened(AbstractActor collidedActor)
     {
-        switch (collidedActor.getRightActorType()) {
+        switch (collidedActor.getActorType()) {
             case PLAYER:
                 collidedActor.setActorDead();
                 break;

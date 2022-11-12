@@ -12,6 +12,9 @@ import Util.Position2D;
 
 public class Player extends AbstractActor
 {
+    /**
+     * Identifier for the direction of the Player
+     */
     private MovementType currentMovementType;
 
     public  Player(Position2D<Float> pos, float szX, float szY)
@@ -26,13 +29,14 @@ public class Player extends AbstractActor
     }
 
     @Override
-    public CollisionActorType getRightActorType()
+    public CollisionActorType getActorType()
     {
         return CollisionActorType.PLAYER;
     }
 
     @Override
-    public void update(float deltaT) {
+    public void update(float deltaT)
+    {
         float moveX = 0, moveY = 0;
         float totalMovement = deltaT * ActorConfigurations.PLAYER_SPEED;
 
@@ -51,15 +55,9 @@ public class Player extends AbstractActor
         }
         super.moveActor(moveX, moveY);
     }
-/*
-    @Override
-    public void update(float deltaT, Graphics2D g)
+
+    public void updatePlayerWithMovementType(MovementType lastMovementType, float deltaT)
     {
-        update(deltaT);
-        sprite.draw(g, this);
-    }
-*/
-    public void updatePlayerWithMovementType(MovementType lastMovementType, float deltaT) {
         currentMovementType = lastMovementType;
         update(deltaT);
     }
@@ -67,7 +65,7 @@ public class Player extends AbstractActor
     @Override
     public void aCollisionIsHappened(AbstractActor collidedActor)
     {
-        switch (collidedActor.getRightActorType()) {
+        switch (collidedActor.getActorType()) {
             case ENEMY:
                 super.setActorDead();
                 break;

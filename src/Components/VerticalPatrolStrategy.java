@@ -1,6 +1,5 @@
 package Components;
 
-import Util.Position2D;
 
 public class VerticalPatrolStrategy extends AbstractPatrolStrategy
 {
@@ -14,6 +13,7 @@ public class VerticalPatrolStrategy extends AbstractPatrolStrategy
     public void update(float deltaT)
     {
         float mov = deltaT * super.speed;
+
         if(super.getIsGoAhead()) {
             super.currentPosition.y += mov;
         } else {

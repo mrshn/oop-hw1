@@ -84,17 +84,17 @@ public class GameEngine
     {
 
         BulletEnemyCollisionHandler  bulletEnemyCollisionInstance = new BulletEnemyCollisionHandler( getNewPlayerFromMap(map) );
-        bulletEnemyCollisionInstance.initializeBulletEnemyCollision( this.enemies, this.bulletsInCirculation, this.walls);
+        bulletEnemyCollisionInstance.initialize( this.enemies, this.walls);
         this.miscComponents.add(bulletEnemyCollisionInstance);
     }
 
     private void setReadValues(GameMapLoader map )
     {
-
         this.player = getNewPlayerFromMap(map);
 
         map.getLoadedWallAABBs().forEach( eachWall ->  this.walls.add(  new Wall(eachWall.getPos(),eachWall.getSizeX(),eachWall.getSizeY()) ) );
         map.getLoadedPowerUpAABBs().forEach( eachPowerUp ->  this.powerUps.add(  new PowerUp(eachPowerUp.getPos(),eachPowerUp.getSizeX(),eachPowerUp.getSizeY()) ) );
+
         //Initialize singleton class for bullets in circulation
         BulletsInCirculationManager.GetInstance().initialize(this.bulletsInCirculation);
 

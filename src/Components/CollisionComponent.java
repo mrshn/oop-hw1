@@ -7,6 +7,9 @@ import java.util.List;
 
 public class CollisionComponent extends RealTimeDecorator
 {
+    /**
+     * All actors can collide with each other and currently subscribed
+     */
     private final List<AbstractActor> allActors = new ArrayList<>();
 
     public CollisionComponent(IRealTimeComponent source)
@@ -31,16 +34,25 @@ public class CollisionComponent extends RealTimeDecorator
         }
     }
 
+    /**
+     * adds to allActors (subscription list)
+     */
     public void subscribe(AbstractActor actor)
     {
         allActors.add(actor);
     }
 
+    /**
+     * removes from allActors (subscription list)
+     */
     public void unsubscribe(AbstractActor actor)
     {
         allActors.remove(actor);
     }
 
+    /**
+     * @param leftActor is notified about a collision with rightActor
+     */
     public void notify(AbstractActor leftActor, AbstractActor rightActor)
     {
         leftActor.aCollisionIsHappened(rightActor);

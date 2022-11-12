@@ -5,8 +5,11 @@ import Util.Position2D;
 
 public abstract class AbstractPatrolStrategy extends RealTimeDecorator implements IPatrolStrategy
 {
-    protected  Position2D<Float> currentPosition;
+    /**
+     * Identifier for the direction of the enemy is reversed or not
+     */
     private boolean goAhead;
+    protected  Position2D<Float> currentPosition;
     protected float speed;
 
     public AbstractPatrolStrategy(IRealTimeComponent source)
@@ -14,6 +17,7 @@ public abstract class AbstractPatrolStrategy extends RealTimeDecorator implement
         super(source);
     }
 
+    @Override
     public void  initialize(Position2D<Float> initialPos)
     {
           currentPosition = initialPos;
@@ -26,6 +30,7 @@ public abstract class AbstractPatrolStrategy extends RealTimeDecorator implement
         return goAhead;
     }
 
+    @Override
     public void changeDirection()
     {
         goAhead = !goAhead;

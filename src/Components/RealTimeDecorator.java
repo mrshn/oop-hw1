@@ -2,15 +2,15 @@ package Components;
 
 public class RealTimeDecorator implements IRealTimeComponent {
 
-    private IRealTimeComponent wrappee;
+    private IRealTimeComponent wrapper;
 
     public RealTimeDecorator(IRealTimeComponent source) {
-        this.wrappee = source;
+        this.wrapper = source;
     }
 
     @Override
     public void update(float deltaT) {
-        wrappee.update(deltaT);
+        wrapper.update(deltaT);
     }
 }
 
