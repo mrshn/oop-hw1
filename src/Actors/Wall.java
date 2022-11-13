@@ -27,14 +27,6 @@ public class Wall extends AbstractActor
     }
 
     @Override
-    public void aCollisionIsHappened(AbstractActor collidedActor)
-    {
-        switch (collidedActor.getActorType()) {
-            case ENEMY:
-            case PLAYER:
-                super.moveIfCollide(collidedActor);
-                break;
-        }
-    }
+    public void aCollisionIsHappened(AbstractActor collidedActor) {}
 
 }

@@ -48,7 +48,12 @@ public class PlayerInputComponent extends RealTimeDecorator implements  KeyListe
     {
         if(firePressed) {
             firePressed = false;
-            Bullet bullet = new Bullet(new Position2D<Float>(player.getPos().x, player.getPos().y), ActorConfigurations.BULLET_WIDTH_AND_HEIGHT, ActorConfigurations.BULLET_WIDTH_AND_HEIGHT);
+            // margins are for firing the bullet from the exact middle point of the player
+
+            float marginX = (player.getSizeX() - ActorConfigurations.BULLET_WIDTH_AND_HEIGHT ) / 2;
+            float marginY = (player.getSizeY() - ActorConfigurations.BULLET_WIDTH_AND_HEIGHT ) / 2;
+
+            Bullet bullet = new Bullet(new Position2D<Float>(player.getPos().x + marginX, player.getPos().y + marginY), ActorConfigurations.BULLET_WIDTH_AND_HEIGHT, ActorConfigurations.BULLET_WIDTH_AND_HEIGHT);
             bullet.fireBulletInDirection( currentMovementType == MovementType.STOP ? lastPressedDirection : currentMovementType  );
             bulletsInCirculationManager.addBullet(bullet);
         }
